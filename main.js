@@ -1,52 +1,58 @@
-var ramas = [[207,202],[202,208],[201,202],[201,204],[201,205],[206,204],[203,204]]
-var nodoSlack = 205
-var nodos = 5
+var ramas = [[1,2],[1,7],[2,3],[3,4],[4,5],[7,6],[6,8], [8, 9], [8, 10]]
+var nodoSlack = 1
+var nodos = 6
 var vector = [nodoSlack]
 var vectorOrden = [nodoSlack]
+let array2 = []
 
-// generamos un orden para crear el vector
-  function generarVector(numero, array) {
-    for(const rama of ramas) {
-      if(rama[0] === array[numero]) {
-        if(array.includes(rama[1])) {
-          let a
-        } else {
-          array.push(rama[1])
-        }
+function encontrarpareja(numero, array) {
+  for(const rama of ramas) {
+    if(rama[0] === numero) {
+      if(array.includes(rama[1])) {
+        let a
+      } else {
+        array.push(rama[1])
       }
-      else if(rama[1] === array[numero]) {
-        if(array.includes(rama[0])) {
-          let b
-        } else {
-          array.push(rama[0])
-        }
+    }
+    else if(rama[1] === numero) {
+      if(array.includes(rama[0])) {
+        let b
+      } else {
+        array.push(rama[0])
       }
     }
   }
+}
+
+// generamos un orden para crear el vector
+function generarVector(numero, array) {
+  for(const rama of ramas) {
+    if(rama[0] === array[numero]) {
+      if(array.includes(rama[1])) {
+        let a
+      } else {
+        array.push(rama[1])
+        encontrarpareja(rama[1], array2)
+      }
+    }
+    else if(rama[1] === array[numero]) {
+      if(array.includes(rama[0])) {
+        let b
+      } else {
+        array.push(rama[0])
+        encontrarpareja(rama[0], array2)
+      }
+    }
+  }
+}
 
 while(vectorOrden.length <= nodos) {
   let numero = vectorOrden.length - 1
   generarVector(numero, vectorOrden)
 }
+console.log(vectorOrden)
 
-  function encontrarpareja(numero, array) {
-    for(const rama of ramas) {
-      if(rama[0] === numero) {
-        if(array.includes(rama[1])) {
-          let a
-        } else {
-          array.push(rama[1])
-        }
-      }
-      else if(rama[1] === numero) {
-        if(array.includes(rama[0])) {
-          let b
-        } else {
-          array.push(rama[0])
-        }
-      }
-    }
-  }
+
 
 // creamos el vector
 vectorOrden.forEach(numero => {
