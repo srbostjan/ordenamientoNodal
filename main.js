@@ -1,11 +1,13 @@
 var ramas = [[1,2],[1,7],[2,3],[3,4],[4,5],[7,6],[6,8], [8, 9], [8, 10]]
 var nodoSlack = 1
-var nodos = 6
 var vector = [nodoSlack]
-var vectorOrden = [nodoSlack]
-let array2 = []
 
-function encontrarpareja(numero, array) {
+// creamos un array con los nodos sin repetirse
+var nodosTotales = ramas.toString().split(',').map(number => parseInt(number))
+var nodos = nodosTotales.filter((item,index)=> nodosTotales.indexOf(item) === index)
+
+// creamos el vector
+function encontrarVector(numero, array) {
   for(const rama of ramas) {
     if(rama[0] === numero) {
       if(array.includes(rama[1])) {
@@ -23,50 +25,16 @@ function encontrarpareja(numero, array) {
     }
   }
 }
-
-// generamos un orden para crear el vector
-function generarVector(numero, array) {
-  for(const rama of ramas) {
-    if(rama[0] === array[numero]) {
-      if(array.includes(rama[1])) {
-        let a
-      } else {
-        array.push(rama[1])
-        encontrarpareja(rama[1], array2)
-      }
-    }
-    else if(rama[1] === array[numero]) {
-      if(array.includes(rama[0])) {
-        let b
-      } else {
-        array.push(rama[0])
-        encontrarpareja(rama[0], array2)
-      }
-    }
-  }
-}
-
-while(vectorOrden.length <= nodos) {
-  let numero = vectorOrden.length - 1
-  generarVector(numero, vectorOrden)
-}
-console.log(vectorOrden)
-
-
-
-// creamos el vector
-vectorOrden.forEach(numero => {
-  encontrarpareja(numero, vector)
+nodos.forEach(numero => {
+  encontrarVector(numero, vector)
 })
-
 
 // generamos el vector ordenado de mayor a menor
 let copiavector = [...vector]
 let vectorMayorMenor = copiavector.sort((a, b) => b - a )
 
 //generamos la segunda rama
-
-var nuevasRamas = []
+var segundaRama = []
 
 function generarSegundaRama(vectorActual, vectorNuevo, ramaActual) {
   for(const rama of ramaActual) {
@@ -76,13 +44,12 @@ function generarSegundaRama(vectorActual, vectorNuevo, ramaActual) {
       let pactual = vectorActual.indexOf(number)
       array.push(vectorNuevo[pactual])
     }
-    nuevasRamas.push(array)
+    segundaRama.push(array)
   }
 }
 generarSegundaRama(vector, vectorMayorMenor, ramas)
 
 // organizamos de mayor a menor segun las filas
-
 let filasMayorMenor = []
 
 function ordernarFilas(matriz) {
@@ -99,11 +66,13 @@ function ordernarFilas(matriz) {
     }
   }
 }
-ordernarFilas(nuevasRamas)
+ordernarFilas(segundaRama)
 
+//creamos el vector ordenado de menor a mayor
 let copiavector2 = [...vector]
 let vectorMenorMayor = copiavector2.sort((a, b) => a - b )
 
+// Creamos la rama final con el ordenamiento nodal
 let arrayFinal = []
 
 function ordenarporcolumna2() {
@@ -117,6 +86,7 @@ function ordenarporcolumna2() {
 }
 ordenarporcolumna2()
 
+// Creamos un array con todos los datos
 const data = [
   {
     name: 'rama inicial',
@@ -132,7 +102,7 @@ const data = [
   },
   {
     name: 'la rama ordenada segun los dos vectores',
-    data: nuevasRamas
+    data: segundaRama
   },
   {
     name: 'la rama ordenada por filas de mayor a menor',
@@ -143,22 +113,14 @@ const data = [
     data: arrayFinal
   }
 ]
+
+// lo convertimos a un json
 var json = JSON.stringify(data)
 
-console.log('la rama inicial es:')
-console.log(ramas)
 
-console.log('el vector iniciado por slack es:')
-console.log(vector)
+//lo imprimimos en la consola
 
-console.log('el vector ordenado de mayor a menor es')
-console.log(vectorMayorMenor)
-
-console.log('la rama ordenada segun los dos vectores es:')
-console.log(nuevasRamas)
-
-console.log('la rama ordenada por filas de mayor a menor es:')
-console.log(filasMayorMenor)
-
-console.log('la rama ordenada por la segunda columna de menor a mayor es:')
-console.log(arrayFinal)
+data.forEach(objeto => {
+  console.log(objeto.name)
+  console.log(objeto.data)
+})
